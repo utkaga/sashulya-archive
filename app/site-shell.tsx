@@ -117,14 +117,17 @@ function HomeContent() {
 }
 
 const familyPhotos = [
+  ["i3876c56a122c4732", "С бабушкой, мне полгодика"],
   ["i1330f50d35b2dc38", "Я дома! Я родился!"], ["i67b6064ad72ec0de", "Мой дедушка"],
   ["i2e7f62044bc0aa08", "Моя бабушка"], ["i574931dff18655ce", "С мамой"],
   ["ic1b36ece71960851", "С папой"], ["i5d01ab942939c90e", "После дороги — под присмотром бабушки и дедушки"],
 ];
 
 function GrandparentsContent() {
+  const preservedFamilyPhotos = familyPhotos.filter(([id]) => availableImageIds.has(id));
   return <><h1>Валентина Дмитриевна и Пётр Александрович</h1><p className="lead">Апрель 2011 года</p>
-    <div className="family-grid">{familyPhotos.map(([id, caption]) => <figure key={id}><a href={archiveImage(id)} target="_blank"><Image src={archiveImage(id)} alt={caption} width={240} height={180} unoptimized /></a><figcaption>{caption}</figcaption></figure>)}</div>
+    <div className="family-grid">{preservedFamilyPhotos.map(([id, caption]) => <figure key={id}><a href={archiveImage(id)} target="_blank"><Image src={archiveImage(id)} alt={caption} width={240} height={180} unoptimized /></a><figcaption>{caption}</figcaption></figure>)}</div>
+    <div className="recovery-note">Остальные семейные фотографии перечислены в архивном HTML, но их исходные JPEG-файлы Jimdo не сохранились.</div>
   </>;
 }
 
@@ -144,15 +147,15 @@ const albums = [
 ];
 
 function TravelsContent() {
-  return <><h1>Мои передвижения</h1><div className="intro-card"><Image src={archiveImage("idbd1c7b3745c1b71")} alt="На даче" width={240} height={180} unoptimized /><div><h2>На даче</h2><p className="date">17.06—21.06.2009</p><p>Я впервые на даче. Погода была хорошая, но не солнечная. В основном меня запечатлевали в домике или в коляске, чтобы я ни в коем случае не простудился.</p></div></div>
+  return <><h1>Мои передвижения</h1><div className="intro-card"><Image src={archiveImage("i15e2221b7acbae3a")} alt="На даче" width={240} height={180} unoptimized /><div><h2>На даче</h2><p className="date">17.06—21.06.2009</p><p>Я впервые на даче. Погода была хорошая, но не солнечная. В основном меня запечатлевали в домике или в коляске, чтобы я ни в коем случае не простудился.</p></div></div>
   <h2 className="album-heading">Архивные фотоистории</h2><div className="album-list">{albums.map(([title, text, slug], i) => <article key={title}><span>{String(i + 1).padStart(2, "0")}</span><div><h3><Link href={`/мои-передвижения/${slug}/`}>{title}</Link></h3><p>{text}</p></div></article>)}</div></>;
 }
 
 const featuredGallery = ["ife44449681dd552a", "id014c5f72dfc6647", "ic97fd67fbdb7d5c7", "i6720d45205bad27c", "ic12bcd765ac78e59", "i46cbec267996df01", "i70634e612edb51db", "i24efaf165d348b06", "i6fb50f7c371f7df6", "i415cc780d03bd053", "i881b8b0fb0f53543", "i188f2907e350488d", "iacd7b2c28a0fb538", "i5c830cedb97c103d", "ia41f655c28bd9cc4"];
 
 function PhotosContent() {
-  const recovered = [...availableImageIds];
-  return <><h1>Фотогалерея</h1><p className="lead">Щёлкните по фотографии, чтобы открыть её крупнее. Все показанные файлы теперь находятся внутри восстановленного сайта и не зависят от Jimdo или Wayback Machine.</p><div className="photo-grid">{recovered.map((id, index) => <a key={id} href={archiveImage(id)} target="_blank" aria-label={`Открыть фотографию ${index + 1}`}><Image src={archiveImage(id)} alt={`Сохранившаяся архивная фотография ${index + 1}`} width={220} height={165} unoptimized /></a>)}</div><div className="recovery-note"><strong>Из исходных файлов в публичном веб-архиве сохранились 10 изображений.</strong><br />В HTML оригинала перечислены ещё сотни фотографий, но сами JPEG-файлы Jimdo не были заархивированы. Их места и подписи сохранены в архивных данных проекта; пустые внешние картинки больше не выводятся.</div></>;
+  const recovered = [...availableImageIds].filter((id) => !["i79f6c393e3455d52", "ida599b8afc67ff9e"].includes(id));
+  return <><h1>Фотогалерея</h1><p className="lead">Щёлкните по фотографии, чтобы открыть её крупнее. Все показанные файлы теперь находятся внутри восстановленного сайта и не зависят от Jimdo или Wayback Machine.</p><div className="photo-grid">{recovered.map((id, index) => <a key={id} href={archiveImage(id)} target="_blank" aria-label={`Открыть фотографию ${index + 1}`}><Image src={archiveImage(id)} alt={`Сохранившаяся архивная фотография ${index + 1}`} width={220} height={165} unoptimized /></a>)}</div><div className="recovery-note"><strong>В публичном веб-архиве сохранились 8 фотографий и 2 декоративных изображения.</strong><br />В HTML оригинала перечислены ещё сотни фотографий, но сами JPEG-файлы Jimdo не были заархивированы. Их места и подписи сохранены в архивных данных проекта; пустые внешние картинки больше не выводятся.</div></>;
 }
 
 const oldVideos = [

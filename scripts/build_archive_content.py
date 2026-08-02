@@ -110,10 +110,58 @@ def main() -> None:
     manifest = json.loads((cache / "pages-manifest.json").read_text(encoding="utf-8-sig"))
     recovered_extras = [
         {
+            "key": "newborn-walk",
+            "path": "/мои-передвижения/на-прогулке-недавно-родился/",
+            "timestamp": "20120913054756",
+            "file": str(cache / "pages" / "newborn-walk.html"),
+        },
+        {
+            "key": "dacha-2-months",
+            "path": "/мои-передвижения/на-даче-мне-2-мес/",
+            "timestamp": "20120913054805",
+            "file": str(cache / "pages" / "dacha-2-months.html"),
+        },
+        {
+            "key": "dacha-3-5-months",
+            "path": "/мои-передвижения/на-даче-мне-3-5-мес/",
+            "timestamp": "20120913054809",
+            "file": str(cache / "pages" / "dacha-3-5-months.html"),
+        },
+        {
             "key": "dacha-4-5-months",
             "path": "/мои-передвижения/на-даче-мне-4-5-мес/",
             "timestamp": "20120913054814",
             "file": str(cache / "pages" / "dacha-4-5-months.html"),
+        },
+        {
+            "key": "lada-birthday",
+            "path": "/мои-передвижения/день-рождения-лады-15-апреля-2011/",
+            "timestamp": "20120913054733",
+            "file": str(cache / "pages" / "lada-birthday.html"),
+        },
+        {
+            "key": "dacha-2-years",
+            "path": "/мои-передвижения/на-даче-мне-уже-2-года/",
+            "timestamp": "20120913054724",
+            "file": str(cache / "pages" / "dacha-2-years.html"),
+        },
+        {
+            "key": "meshchersky-pond",
+            "path": "/мои-передвижения/на-мещерском-пруду-8-октября-2011/",
+            "timestamp": "20120913054823",
+            "file": str(cache / "pages" / "meshchersky-pond.html"),
+        },
+        {
+            "key": "new-year-2012",
+            "path": "/мои-передвижения/встреча-нового-года-2012-в-гноме/",
+            "timestamp": "20130413012456",
+            "file": str(cache / "pages" / "new-year-2012.html"),
+        },
+        {
+            "key": "dacha-3-years",
+            "path": "/мои-передвижения/на-даче-мне-уже-3-года-май-2012/",
+            "timestamp": "20130413013556",
+            "file": str(cache / "pages" / "dacha-3-years.html"),
         },
         {
             "key": "grandmothers-flowers",

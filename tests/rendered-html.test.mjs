@@ -37,3 +37,12 @@ test("keeps photographs local and restores a nested archive page", async () => {
   assert.match(nestedHtml, /Как я уже говорил, моя бабушка любит и ценит красивые растения/);
   assert.match(nestedHtml, /Все фотоистории/);
 });
+
+test("restores the original newborn walk page instead of a stub", async () => {
+  const response = await render("/%D0%BC%D0%BE%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B2%D0%B8%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F/%D0%BD%D0%B0-%D0%BF%D1%80%D0%BE%D0%B3%D1%83%D0%BB%D0%BA%D0%B5-%D0%BD%D0%B5%D0%B4%D0%B0%D0%B2%D0%BD%D0%BE-%D1%80%D0%BE%D0%B4%D0%B8%D0%BB%D1%81%D1%8F/");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /На прогулке/);
+  assert.match(html, /апрель - май 2009 года/);
+  assert.match(html, /На этой странице было фотографий:.*2/);
+});

@@ -188,6 +188,7 @@ function ArchivePageContent({ path }: { path: string }) {
   const page = (archivePages as ArchivePageRecord[]).find((item) => item.path === normalized);
   const album = albums.find((item) => normalized.endsWith(`/${item[2]}/`));
   const blocks = page?.blocks ?? [];
+  const missingImageCount = blocks.filter((block) => block.type === "image" && (!block.id || !availableImageIds.has(block.id))).length;
   const renderable = blocks.filter((block) => block.type !== "image" || (block.id && availableImageIds.has(block.id)));
 
   return <>
@@ -202,7 +203,7 @@ function ArchivePageContent({ path }: { path: string }) {
       if (block.type === "video" && block.id && /^[\w-]{6,}$/.test(block.id)) return <div className="video-frame" key={key}><iframe src={`https://www.youtube-nocookie.com/embed/${block.id}`} title="Архивное видео" allowFullScreen /></div>;
       return null;
     }) : <><h1>{album?.[0] || "Архивная страница"}</h1><p>{album?.[1] || "Страница найдена в структуре исходного сайта."}</p></>}
-    <div className="recovery-note"><strong>Страница восстановлена и снова открывается по исходному адресу.</strong><br />Текст, подписи и видео перенесены из сохранённой HTML-копии. Фотографии выводятся только там, где веб-архив сохранил сам файл, а не одну внешнюю ссылку Jimdo.</div>
+    <div className="recovery-note"><strong>Страница восстановлена из исходной HTML-копии.</strong><br />Текст, даты, подписи и видео перенесены из Web Archive.{missingImageCount > 0 && <><br />На этой странице было фотографий: {missingImageCount}. Архив сохранил их расположение, но не сохранил сами файлы Jimdo.</>}</div>
   </>;
 }
 

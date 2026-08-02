@@ -2,7 +2,9 @@
 
 Семейный сайт, созданный на Jimdo в 2009 году и восстановленный по материалам Web Archive.
 
-## [Открыть сайт](https://sashulya-archive.utkaga.chatgpt.site/)
+## [Открыть сайт на GitHub Pages](https://utkaga.github.io/sashulya-archive/)
+
+Резервная рабочая версия: [sashulya-archive.utkaga.chatgpt.site](https://sashulya-archive.utkaga.chatgpt.site/)
 
 В восстановленную версию перенесены:
 

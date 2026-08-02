@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import archivePages from "./archive-pages.json";
 
 type Section = "home" | "grandparents" | "travels" | "photos" | "video" | "new-video" | "guestbook";
 
@@ -44,12 +45,16 @@ const archivedImages: Record<string, string> = {
   ia41f655c28bd9cc4: "1342382939/std/%D0%B2-%D0%BF%D0%B0%D1%80%D0%BA%D0%B5-%D0%B2-%D0%BE%D1%82%D1%80%D0%B0%D0%B4%D0%BD%D0%BE%D0%BC.jpg",
 };
 
-const archiveImage = (id: string, ext = "jpg") => {
-  const path = archivedImages[id];
-  return path
-    ? `https://web.archive.org/web/20130413012302id_/http://u.jimdo.com/www12/o/sd32afdccef62c9a9/img/${id}/${path}`
-    : `/archive/${id}.${ext}`;
-};
+const availableImageIds = new Set([
+  "i15e2221b7acbae3a", "i2b435cf11737b191", "i3876c56a122c4732",
+  "i79f6c393e3455d52", "i829ef2f03b999565", "ib33df5046e37d65d",
+  "ic2841c938976868b", "ic879d980b3b9f081", "id748f89b59d6d175",
+  "ida599b8afc67ff9e",
+]);
+
+const archiveImage = (id: string) => availableImageIds.has(id)
+  ? `/archive/${id}.jpg`
+  : "/archive/unavailable.svg";
 
 export function sectionFromSlug(parts: string[]): Section {
   const slug = decodeURIComponent(parts.join("/"));
@@ -124,26 +129,30 @@ function GrandparentsContent() {
 }
 
 const albums = [
-  ["На даче — мне 2 месяца", "Первые дачные прогулки и отдых в коляске."],
-  ["На даче — мне 3,5 месяца", "Лето, цветы и первые маленькие открытия."],
-  ["На даче — мне 4,5 месяца", "Ещё один семейный фотоотчёт."],
-  ["День рождения Лады — 15 апреля 2011", "Поездка на день рождения."],
-  ["На Мещерском пруду — 8 октября 2011", "Осенняя прогулка всей семьёй."],
-  ["Встреча Нового года 2012 в «Гноме»", "Новогодний праздник."],
-  ["На даче — мне уже 3 года, май 2012", "Весенний дачный сезон."],
-  ["Бабушкина флора на даче", "Большая архивная галерея цветов."],
-  ["Встреча Нового 2013 года", "Цирк Деда Мороза и Бериляки."],
+  ["На прогулке — недавно родился", "Первые прогулки.", "на-прогулке-недавно-родился"],
+  ["На даче — мне 2 месяца", "Первые дачные прогулки и отдых в коляске.", "на-даче-мне-2-мес"],
+  ["На даче — мне 3,5 месяца", "Лето, цветы и первые маленькие открытия.", "на-даче-мне-3-5-мес"],
+  ["На даче — мне 4,5 месяца", "Ещё один семейный фотоотчёт.", "на-даче-мне-4-5-мес"],
+  ["День рождения Лады — 15 апреля 2011", "Поездка на день рождения.", "день-рождения-лады-15-апреля-2011"],
+  ["На даче — мне уже 2 года", "Семейный дачный фотоотчёт.", "на-даче-мне-уже-2-года"],
+  ["На Мещерском пруду — 8 октября 2011", "Осенняя прогулка всей семьёй.", "на-мещерском-пруду-8-октября-2011"],
+  ["Встреча Нового года 2012 в «Гноме»", "Новогодний праздник.", "встреча-нового-года-2012-в-гноме"],
+  ["На даче — мне уже 3 года, май 2012", "Весенний дачный сезон.", "на-даче-мне-уже-3-года-май-2012"],
+  ["Бабушкина флора на даче", "Большая архивная галерея цветов.", "бабушкина-флора-на-даче"],
+  ["Встреча Нового 2013 года", "Цирк Деда Мороза и Бериляки.", "встреча-нового-2013-года"],
+  ["Фото новой квартиры — ремонт", "Фотографии ремонта перед переездом.", "фото-новой-квартиры-ремонт"],
 ];
 
 function TravelsContent() {
   return <><h1>Мои передвижения</h1><div className="intro-card"><Image src={archiveImage("idbd1c7b3745c1b71")} alt="На даче" width={240} height={180} unoptimized /><div><h2>На даче</h2><p className="date">17.06—21.06.2009</p><p>Я впервые на даче. Погода была хорошая, но не солнечная. В основном меня запечатлевали в домике или в коляске, чтобы я ни в коем случае не простудился.</p></div></div>
-  <h2 className="album-heading">Архивные фотоистории</h2><div className="album-list">{albums.map(([title, text], i) => <article key={title}><span>{String(i + 1).padStart(2, "0")}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></>;
+  <h2 className="album-heading">Архивные фотоистории</h2><div className="album-list">{albums.map(([title, text, slug], i) => <article key={title}><span>{String(i + 1).padStart(2, "0")}</span><div><h3><Link href={`/мои-передвижения/${slug}/`}>{title}</Link></h3><p>{text}</p></div></article>)}</div></>;
 }
 
 const featuredGallery = ["ife44449681dd552a", "id014c5f72dfc6647", "ic97fd67fbdb7d5c7", "i6720d45205bad27c", "ic12bcd765ac78e59", "i46cbec267996df01", "i70634e612edb51db", "i24efaf165d348b06", "i6fb50f7c371f7df6", "i415cc780d03bd053", "i881b8b0fb0f53543", "i188f2907e350488d", "iacd7b2c28a0fb538", "i5c830cedb97c103d", "ia41f655c28bd9cc4"];
 
 function PhotosContent() {
-  return <><h1>Фотогалерея</h1><p className="lead">Щёлкните по фотографии, чтобы открыть её крупнее. Наверху — самые поздние снимки, как и на оригинальном сайте.</p><h2>01.01.2013 года — зимняя прогулка</h2><p>Сходил сегодня с родителями в лес. Там такие красивые деревья, покрытые снегом! Мы погуляли на Мещерском пруду, попили чаю и компот из термосов, а потом разожгли костёр.</p><div className="photo-grid">{featuredGallery.map((id, index) => <a key={id} href={archiveImage(id)} target="_blank" aria-label={`Открыть фотографию ${index + 1}`}><Image src={archiveImage(id)} alt={`Архивная фотография ${index + 1}`} width={220} height={165} unoptimized /></a>)}</div><div className="recovery-note"><strong>Большой фотоархив сохранён.</strong><br />В восстановленную копию загружены все изображения, которые удалось получить из снимков Wayback Machine.</div></>;
+  const recovered = [...availableImageIds];
+  return <><h1>Фотогалерея</h1><p className="lead">Щёлкните по фотографии, чтобы открыть её крупнее. Все показанные файлы теперь находятся внутри восстановленного сайта и не зависят от Jimdo или Wayback Machine.</p><div className="photo-grid">{recovered.map((id, index) => <a key={id} href={archiveImage(id)} target="_blank" aria-label={`Открыть фотографию ${index + 1}`}><Image src={archiveImage(id)} alt={`Сохранившаяся архивная фотография ${index + 1}`} width={220} height={165} unoptimized /></a>)}</div><div className="recovery-note"><strong>Из исходных файлов в публичном веб-архиве сохранились 10 изображений.</strong><br />В HTML оригинала перечислены ещё сотни фотографий, но сами JPEG-файлы Jimdo не были заархивированы. Их места и подписи сохранены в архивных данных проекта; пустые внешние картинки больше не выводятся.</div></>;
 }
 
 const oldVideos = [
@@ -168,7 +177,34 @@ function GuestbookContent() {
   return <><h1>Гостевая книга</h1><div className="guestbook"><p>Дорогой гость сайта, если у Вас есть желание, напишите письмо — и мои родители обязательно Вам ответят.</p><a className="mail-button" href="mailto:utka-go@bk.ru?subject=Гостевая книга сайта Шурика">Написать в гостевую книгу</a><p className="small-note">Оригинальная форма Jimdo больше не работает, поэтому в восстановленной версии используется обычное письмо.</p></div></>;
 }
 
-function Content({ section }: { section: Section }) {
+type ArchiveBlock = { type: "h1" | "h2" | "h3" | "p" | "image" | "video"; text?: string; id?: string; alt?: string };
+type ArchivePageRecord = { path: string; blocks: ArchiveBlock[] };
+
+function ArchivePageContent({ path }: { path: string }) {
+  const normalized = decodeURIComponent(path).replace(/\/+/g, "/").replace(/\/?$/, "/");
+  const page = (archivePages as ArchivePageRecord[]).find((item) => item.path === normalized);
+  const album = albums.find((item) => normalized.endsWith(`/${item[2]}/`));
+  const blocks = page?.blocks ?? [];
+  const renderable = blocks.filter((block) => block.type !== "image" || (block.id && availableImageIds.has(block.id)));
+
+  return <>
+    <Link className="back-link" href="/мои-передвижения/">← Все фотоистории</Link>
+    {renderable.length > 0 ? renderable.map((block, index) => {
+      const key = `${block.type}-${index}`;
+      if (block.type === "h1") return <h1 key={key}>{block.text}</h1>;
+      if (block.type === "h2") return <h2 key={key}>{block.text}</h2>;
+      if (block.type === "h3") return <h3 key={key}>{block.text}</h3>;
+      if (block.type === "p") return <p key={key}>{block.text}</p>;
+      if (block.type === "image" && block.id) return <a className="archive-single-photo" key={key} href={archiveImage(block.id)} target="_blank"><Image src={archiveImage(block.id)} alt={block.alt || "Архивная фотография"} width={720} height={540} unoptimized /></a>;
+      if (block.type === "video" && block.id && /^[\w-]{6,}$/.test(block.id)) return <div className="video-frame" key={key}><iframe src={`https://www.youtube-nocookie.com/embed/${block.id}`} title="Архивное видео" allowFullScreen /></div>;
+      return null;
+    }) : <><h1>{album?.[0] || "Архивная страница"}</h1><p>{album?.[1] || "Страница найдена в структуре исходного сайта."}</p></>}
+    <div className="recovery-note"><strong>Страница восстановлена и снова открывается по исходному адресу.</strong><br />Текст, подписи и видео перенесены из сохранённой HTML-копии. Фотографии выводятся только там, где веб-архив сохранил сам файл, а не одну внешнюю ссылку Jimdo.</div>
+  </>;
+}
+
+function Content({ section, archivePath }: { section: Section; archivePath?: string }) {
+  if (section === "travels" && archivePath && archivePath !== "/мои-передвижения/") return <ArchivePageContent path={archivePath} />;
   if (section === "grandparents") return <GrandparentsContent />;
   if (section === "travels") return <TravelsContent />;
   if (section === "photos") return <PhotosContent />;
@@ -178,11 +214,11 @@ function Content({ section }: { section: Section }) {
   return <HomeContent />;
 }
 
-export function SiteShell({ section }: { section: Section }) {
+export function SiteShell({ section, archivePath }: { section: Section; archivePath?: string }) {
   return <div className="site-wrap">
     <header className="site-header"><div className="cloud cloud-one" /><div className="cloud cloud-two" /><Image src="/archive/header.jpg" alt="Сайт Шурика" width={452} height={75} priority unoptimized /></header>
     <nav className="main-nav" aria-label="Основная навигация">{nav.map((item) => <Link key={item.id} className={section === item.id ? "active" : ""} href={item.href}>{item.label}</Link>)}</nav>
-    <div className="content-shell"><main className="main-content"><Content section={section} /></main><Sidebar /></div>
+    <div className="content-shell"><main className="main-content"><Content section={section} archivePath={archivePath} /></main><Sidebar /></div>
     <footer>© Александр Криков. Все права защищены. <span>Восстановлено по архивной версии 2013 года.</span></footer>
   </div>;
 }

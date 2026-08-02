@@ -6,5 +6,6 @@ export default async function ArchivePage({
   params: Promise<{ slug: string[] }>;
 }) {
   const { slug } = await params;
-  return <SiteShell section={sectionFromSlug(slug)} />;
+  const archivePath = `/${slug.map(decodeURIComponent).join("/")}/`;
+  return <SiteShell section={sectionFromSlug(slug)} archivePath={archivePath} />;
 }

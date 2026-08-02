@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="320" viewBox="0 0 480 320">
+  <rect width="480" height="320" fill="#e7f8fb"/>
+  <path d="M0 250L125 135l72 67 58-54 225 172H0z" fill="#b9e8ef"/>
+  <circle cx="365" cy="82" r="36" fill="#d4f587"/>
+  <text x="240" y="286" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#4e7075">Файл фотографии не сохранился в веб-архиве</text>
+</svg>

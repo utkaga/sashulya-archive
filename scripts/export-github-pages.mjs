@@ -32,6 +32,7 @@ function makeStatic(html) {
     .replace(/<link\b[^>]*rel="modulepreload"[^>]*\/?\s*>/gi, "")
     .replace(/\b(href|src|srcSet)="\/(?!\/)/g, `$1="${basePath}/`)
     .replace(/(?<!sashulya-archive)\/archive\//g, `${basePath}/archive/`)
+    .replace(/\.css"/g, '.css?archive-theme=2"')
     .replaceAll("http://localhost:3000/og.png", `${siteUrl}/og.png`)
     .replace("</head>", '<meta name="generator" content="GitHub Pages static archive"/></head>');
 }

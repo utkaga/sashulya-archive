@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -18,6 +18,13 @@ const { default: worker } = await import(workerUrl.href);
 await rm(outputRoot, { recursive: true, force: true });
 await mkdir(outputRoot, { recursive: true });
 await cp(join(projectRoot, "dist", "client"), outputRoot, { recursive: true });
+
+for (const entry of await readdir(join(outputRoot, "assets"))) {
+  if (!entry.endsWith(".css")) continue;
+  const cssPath = join(outputRoot, "assets", entry);
+  const css = await readFile(cssPath, "utf8");
+  await writeFile(cssPath, css.replaceAll("/archive/", `${basePath}/archive/`), "utf8");
+}
 
 function makeStatic(html) {
   return html

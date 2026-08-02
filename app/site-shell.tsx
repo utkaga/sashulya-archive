@@ -70,49 +70,57 @@ export function sectionFromSlug(parts: string[]): Section {
 function Sidebar() {
   return (
     <aside className="sidebar">
-      <div className="archive-stamp"><span>Сайт восстановлен</span><strong>2009—2013</strong><small>по материалам веб-архива</small></div>
+      <div className="jimdo-box"><Image src="/archive/jimdo-sidebar.gif" alt="Jimdo" width={129} height={46} unoptimized /><span>Pages to the People</span></div>
+      <Image className="sidebar-divider" src="/archive/i79f6c393e3455d52.jpg" alt="" width={160} height={7} unoptimized />
       <h3>Самое интересное и новое обо мне:</h3>
       <Image className="sidebar-image" src={archiveImage("i2b435cf11737b191")} alt="Цирк Деда Мороза" width={180} height={133} unoptimized />
       <p className="hot"><Link href="/мои-передвижения/">Новый 2013 год</Link><br />Я в Цирке Деда Мороза и Бериляки — было необыкновенно весело!</p>
       <p className="hot">Весной и летом 2012 я на даче. Отчёт — в фотографиях.</p>
       <p className="green">И ещё представлена галерея моей бабушки — очень красиво!</p>
+      <Image className="sidebar-divider lower" src="/archive/ida599b8afc67ff9e.jpg" alt="" width={182} height={3} unoptimized />
       <Image className="sidebar-image portrait" src={archiveImage("i3876c56a122c4732")} alt="С бабушкой, мне полгодика" width={180} height={252} unoptimized />
       <p className="caption">Это — моя бабушка. Мне полгодика.</p>
     </aside>
   );
 }
 
+const homeImageDimensions: Record<string, [number, number]> = {
+  i829ef2f03b999565: [150, 200],
+  ib33df5046e37d65d: [150, 266],
+  id748f89b59d6d175: [210, 140],
+  i15e2221b7acbae3a: [210, 157],
+  ic2841c938976868b: [133, 177],
+  ic879d980b3b9f081: [240, 180],
+};
+
 function HomeContent() {
+  const blocks = (archivePages as ArchivePageRecord[]).find((page) => page.key === "home")?.blocks;
+  if (!blocks?.length) return null;
+
+  const entries: { date: string; blocks: ArchiveBlock[] }[] = [];
+  for (const block of blocks.slice(1)) {
+    if (block.type === "p" && block.text && /^\d{2}\.\d{2}\.\d{4}/.test(block.text)) {
+      entries.push({ date: block.text, blocks: [] });
+    } else if (entries.length) {
+      entries[entries.length - 1].blocks.push(block);
+    }
+  }
+
   return <>
-    <h1>Основные записи моего сайта</h1>
-    <article className="post">
-      <p className="date red">10.03.2012 года</p>
-      <h2>Бабушке, дедушке и всем, кому интересно )))</h2>
-      <p>Родители начали ремонт в квартире, куда мы переедем вскоре. Отчёт — на фотографиях. Теперь у меня будет своя комната.</p>
-    </article>
-    <article className="post with-photo">
-      <p className="date">27.12.2012 года</p>
-      <Image src={archiveImage("i829ef2f03b999565")} alt="Новогодний утренник" width={150} height={200} unoptimized />
-      <div><h2 className="red">С уже Наступившим Вас Новым 2013 Годом!</h2>
-      <p className="maroon">Счастья и здоровья желаю, пусть непременно сбудутся Ваши мечты! Пусть вам родители купят все машинки и поезда в Детском Мире, все скорые помощи и мусоровозы.</p>
-      <p className="violet">У меня 27 декабря был Новогодний утренник в саду. Видео можно посмотреть <Link href="/новое-видео/">здесь</Link>.</p></div>
-    </article>
-    <article className="post with-photo">
-      <p className="date">18.03.2012 года</p>
-      <Image src={archiveImage("ib33df5046e37d65d")} alt="Шурик весной 2012 года" width={150} height={266} unoptimized />
-      <div><p className="green"><strong>Поступили жалобы на отсутствие обновлений на моём сайте ))). Действительно, я брал паузу в работе над отчётом своей жизни здесь. Скоро начнётся дачный сезон и скоро у меня будет День Рождения — 3 года!</strong></p>
-      <p><Link href="/фотографии/">Вот несколько свежих фотографий.</Link></p></div>
-    </article>
-    <article className="post with-photo">
-      <p className="date">08.12.2011</p>
-      <Image src={archiveImage("id748f89b59d6d175")} alt="Мне 2 года 7,5 месяцев" width={210} height={140} unoptimized />
-      <div><h2 className="brown">Я взрослый, потому что:</h2><ul><li>говорю всё подряд</li><li>вожу машину</li><li>всё делаю САМ</li></ul><p><strong>И не нужно думать, что я ещё маленький. Я — большой.</strong></p></div>
-    </article>
-    <article className="post with-photo">
-      <p className="date">05.06.2009</p>
-      <Image src={archiveImage("ic2841c938976868b")} alt="Мне 1,5 месяца" width={133} height={177} unoptimized />
-      <div><h2>Здравствуйте!</h2><p className="navy"><strong>Меня зовут Саша. Родные называют Шуриком, Сашулей и т. д. А иногда и Александром Сергеевичем. Родился я 20 апреля 2009 года, ранним прохладным весенним утром, в Москве.</strong></p><p>Мы с мамой и папой стараемся постоянно обновлять коллекцию, чтобы Вам было интересно наблюдать за моим ростом и развитием.</p><p className="signature">Ваш Шурик.</p></div>
-    </article>
+    <h1>{blocks[0].text}</h1>
+    {entries.map((entry, entryIndex) => <article className="archive-home-entry" key={entry.date}>
+      <p className={`date ${entryIndex === 0 ? "red" : ""}`}>{entry.date}</p>
+      {entry.blocks.map((block, index) => {
+        if (block.type === "h1" || block.type === "h2" || block.type === "h3") return <h2 key={index}>{block.text}</h2>;
+        if (block.type === "image" && block.id && availableImageIds.has(block.id)) {
+          const [width, height] = homeImageDimensions[block.id] || [210, 160];
+          return <Image key={index} src={archiveImage(block.id)} alt={block.alt || "Архивная фотография"} width={width} height={height} unoptimized />;
+        }
+        if (block.type === "p") return <p key={index} className={index === 1 && entryIndex === 1 ? "red strong" : ""}>{block.text}</p>;
+        return null;
+      })}
+      <div className="clear" />
+    </article>)}
   </>;
 }
 
@@ -181,7 +189,7 @@ function GuestbookContent() {
 }
 
 type ArchiveBlock = { type: "h1" | "h2" | "h3" | "p" | "image" | "video"; text?: string; id?: string; alt?: string };
-type ArchivePageRecord = { path: string; blocks: ArchiveBlock[] };
+type ArchivePageRecord = { key?: string; path: string; blocks: ArchiveBlock[] };
 
 function ArchivePageContent({ path }: { path: string }) {
   const normalized = decodeURIComponent(path).replace(/\/+/g, "/").replace(/\/?$/, "/");
@@ -220,7 +228,7 @@ function Content({ section, archivePath }: { section: Section; archivePath?: str
 
 export function SiteShell({ section, archivePath }: { section: Section; archivePath?: string }) {
   return <div className="site-wrap">
-    <header className="site-header"><div className="cloud cloud-one" /><div className="cloud cloud-two" /><Image src="/archive/header.jpg" alt="Сайт Шурика" width={452} height={75} priority unoptimized /></header>
+    <header className="site-header"><Link href="/"><Image src="/archive/header.jpg" alt="Сайт Шурика" width={452} height={75} priority unoptimized /></Link></header>
     <nav className="main-nav" aria-label="Основная навигация">{nav.map((item) => <Link key={item.id} className={section === item.id ? "active" : ""} href={item.href}>{item.label}</Link>)}</nav>
     <div className="content-shell"><main className="main-content"><Content section={section} archivePath={archivePath} /></main><Sidebar /></div>
     <footer>© Александр Криков. Все права защищены. <span>Восстановлено по архивной версии 2013 года.</span></footer>
